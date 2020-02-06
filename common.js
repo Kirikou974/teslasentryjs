@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { promisify } = require('util');
 const readdirAsync = promisify(fs.readdir);
+const accessAsync = promisify(fs.access);
 const { exec } = require('child_process');
 
 const clipTypes = {
@@ -36,8 +37,6 @@ async function getFolderList(subFolderName) {
 
 async function getClips(clipType) {
 	//Rebuild date from folder name
-	// return await getFolderList(clipType);
-
 	let folders = await getFolderList(clipType.folderName);
 	let eventDates = {};
 	eventDates.menuTitle = clipType.menuTitle;
@@ -75,20 +74,29 @@ exports.getReportData = () => {
 
 exports.getPosterImage = async (videoId, imageFolderPath) => {
 	let imagePath = `${imageFolderPath}/${videoId}.jpg`;
-	await fs.access(imagePath, fs.F_OK, err => {
-		if (err) {
-			exec(
-				//TODO change to dynamic variables
-				`ffmpeg -i events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4 -ss 00:00:04.00 -r 1 -an -vframes 1 -f mjpeg ${imagePath}`,
-				(error, stdout, stderr) => {
-					if (error) {
-						console.log(error);
-						throw error;
+	try {
+		await accessAsync(imagePath, fs.F_OK);
+	} catch (error) {
+		if (error.errno == -2) {
+			await new Promise((resolve, reject) => {
+				exec(
+					//TODO change to dynamic variables
+					`ffmpeg -i events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4 -r 1 -an -vframes 1 -f mjpeg ${imagePath}`,
+					(error, stdout, stderr) => {
+						if (error) {
+							reject();
+							throw error;
+						} else {
+							resolve();
+						}
 					}
-				}
-			);
+				);
+			});
+		} else {
+			throw error;
 		}
-	});
+	}
+
 	return imagePath;
 };
 
@@ -104,6 +112,7 @@ exports.streamVideo = (req, res, path) => {
 	let total = stat.size;
 
 	const range = req.headers.range;
+
 	if (!range) {
 		// 416 Wrong range
 		return res.sendStatus(416);

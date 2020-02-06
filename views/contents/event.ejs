@@ -1,14 +1,14 @@
 <div class="container-fluid" id="videoContainer">
-	<h2>Title</h2>
+	<h2><%= clipParams.clipFolder %></h2>
 	<hr />
 	<div class="row">
 		<div class="form-group col-md-12">
-			<div class="card rounded-0 p-0 shadow-sm">
+			<div>
 				<video
 					id="video"
-					width="100%"
+					width="50%"
 					preload="metadata"
-					poster="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/poster"
+					poster="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/poster.jpg"
 					controls
 				></video>
 				<script>

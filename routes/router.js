@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const { exec } = require('child_process');
 const common = require('../common');
 const router = express.Router();
@@ -20,51 +21,41 @@ router.get('/', (req, res) => {
 
 //TODO : ffmpeg -f concat -safe 0 -i <(for f in ./*front.mp4; do echo "file '$PWD/$f'"; done) -c copy front.mp4
 //Generates poster image for video
-router.get('/video/:cliptype/:id/poster', (req, res) => {
+router.get('/video/:cliptype/:id/poster.jpg', (req, res) => {
 	let videoType = req.params.cliptype;
 	let videoId = req.params.id;
 	let imageFolderPath = 'public/videoimages';
 	common.getPosterImage(videoId, imageFolderPath).then(imagePath => {
-		res.send(imagePath);
+		res.sendFile(path.join(__dirname, `../${imagePath}`));
 	});
 });
 
 router.get('/video/:cliptype/:id', (req, res) => {
+	console.log('get video clip');
 	let videoType = req.params.cliptype;
 	let videoId = req.params.id;
+	let videoPath = `events/${videoType}/${videoId}/2020-01-16_12-44-13-front`;
 	// const path = `tmp/_output.mp4`;
-	fs.access(
-		'events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4',
-		fs.F_OK,
-		err => {
-			if (err) {
-				//Fix for Chrome as tesla video start with negative time :
-				// https://www.reddit.com/r/teslamotors/comments/chpbsp/2019244_dashcam_video_not_playable_in_browser/
-				//
-				exec(
-					`ffmpeg -i events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front.mp4 -c:v copy events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4`,
-					(error, stdout, stderr) => {
-						if (error) {
-							console.log(error);
-							res.sendStatus(500);
-						} else {
-							common.streamVideo(
-								req,
-								res,
-								'events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4'
-							);
-						}
+	fs.access(`${videoPath}_output.mp4`, fs.F_OK, err => {
+		if (err) {
+			console.log(err);
+			//Fix for Chrome as tesla video start with negative time :
+			// https://www.reddit.com/r/teslamotors/comments/chpbsp/2019244_dashcam_video_not_playable_in_browser/
+			//
+			exec(
+				`ffmpeg -i ${videoPath}.mp4 -c:v copy ${videoPath}_output.mp4`,
+				(error, stdout, stderr) => {
+					if (error) {
+						res.sendStatus(500);
+					} else {
+						common.streamVideo(req, res, `${videoPath}_output.mp4`);
 					}
-				);
-			} else {
-				common.streamVideo(
-					req,
-					res,
-					'events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4'
-				);
-			}
+				}
+			);
+		} else {
+			common.streamVideo(req, res, `${videoPath}_output.mp4`);
 		}
-	);
+	});
 });
 
 router.get(['/:pageName'], (req, res) => {
