@@ -5,11 +5,13 @@ const readdirAsync = promisify(fs.readdir);
 const clipTypes = {
 	SENTRY: {
 		folderName: 'SentryClips',
-		menuTitle: 'Sentry clips'
+		menuTitle: 'Sentry clips',
+		menuIcon: 'eye'
 	},
 	SAVED: {
 		folderName: 'SavedClips',
-		menuTitle: 'Saved clips'
+		menuTitle: 'Saved clips',
+		menuIcon: 'video'
 	}
 };
 
@@ -37,6 +39,7 @@ async function getClips(clipType) {
 	let folders = await getFolderList(clipType.folderName);
 	let eventDates = {};
 	eventDates.menuTitle = clipType.menuTitle;
+	eventDates.menuIcon = clipType.menuIcon;
 	eventDates.items = {};
 
 	folders.forEach(folder => {

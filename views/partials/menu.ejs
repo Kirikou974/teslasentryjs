@@ -22,7 +22,10 @@
 		<div class="sidebar-menu">
 			<ul>
 				<li class="header-menu">
-					<span data-feather="eye" class="feather-header"></span>
+					<span
+						data-feather="<%= menuItems[menuItemKey].menuIcon %>"
+						class="feather-header"
+					></span>
 					<span><%= menuItems[menuItemKey].menuTitle %></span>
 				</li>
 				<%

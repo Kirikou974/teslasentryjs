@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
 	common.getAllEvents().then(events => {
-		console.log(events);
 		res.render('pages/index', {
 			menuItems: events
 		});
