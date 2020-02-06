@@ -3,10 +3,28 @@
 </a>
 <nav id="sidebar" class="sidebar-wrapper">
 	<div class="sidebar-content">
+		<span class="badge badge-pill badge-danger">Alpha</span>
 		<div class="sidebar-brand">
-			<a href="#">MENU</a>
+			<a href="#">TESLA VIDEO ANALYZER</a>
 			<div id="close-sidebar">
 				<i class="fas fa-times"></i>
+			</div>
+		</div>
+		<div class="sidebar-header">
+			<div class="user-pic">
+				<img
+					class="img-responsive"
+					src="../../images/tesla.png"
+					alt="User picture"
+				/>
+			</div>
+			<div class="user-info">
+				<span class="user-name"><strong>Summer</strong> </span>
+				<!-- <span class="user-role">Administrator</span> -->
+				<span class="user-status">
+					<i class="fa fa-circle"></i>
+					<span>Online</span>
+				</span>
 			</div>
 		</div>
 		<!-- <div class="sidebar-menu">
@@ -18,7 +36,6 @@
 			</ul>
 		</div> -->
 		<% Object.keys(menuItems).forEach(function(menuItemKey) { %>
-
 		<div class="sidebar-menu">
 			<ul>
 				<li class="header-menu">
@@ -37,6 +54,9 @@
 						<span>
 							<%= new
 							Date(menuItems[menuItemKey].items[dateEvent].time).toLocaleDateString()%>
+						</span>
+						<span class="badge badge-pill badge-warning notification">
+							<%= menuItems[menuItemKey].items[dateEvent].events.length %>
 						</span>
 					</a>
 					<div class="sidebar-submenu">

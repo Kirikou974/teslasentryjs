@@ -1,18 +1,20 @@
-<div class="col-md-8 m-auto pt-4">
-	<h1 class="text-center mb-5">Video Stream Example Nodejs + HTML5</h1>
-	<video
-		id="video"
-		width="100%"
-		poster="<%= image %>"
-		preload="metadata"
-		controls
-	></video>
-	<script>
-		// Later on, after some condition has been met, set video source to the
-		// preloaded video URL.
-		video.src = 'http://localhost:3000/video';
-		video.play().then(_ => {
-			// If preloaded video URL was already cached, playback started immediately.
-		});
-	</script>
+<div class="container-fluid" id="videoContainer">
+	<h2>Title</h2>
+	<hr />
+	<div class="row">
+		<div class="form-group col-md-12">
+			<div class="card rounded-0 p-0 shadow-sm">
+				<!-- poster="<%#= image %>" -->
+				<video id="video" width="100%" preload="metadata" controls></video>
+				<script>
+					// Later on, after some condition has been met, set video source to the
+					// preloaded video URL.
+					video.src = 'http://localhost:3000/video';
+					video.play().then(_ => {
+						// If preloaded video URL was already cached, playback started immediately.
+					});
+				</script>
+			</div>
+		</div>
+	</div>
 </div>
