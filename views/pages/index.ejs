@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include('../partials/header') -%>
+	<body>
+		<div class="page-wrapper chiller-theme toggled">
+			<%- include('../partials/menu', sentryEvents, savedEvents) -%>
+
+			<!-- sidebar-wrapper  -->
+			<main class="page-content">
+				<div class="container-fluid">
+					<h2>Report</h2>
+					<hr />
+					<div class="row">
+						<canvas
+							class="my-4 w-100"
+							id="myChart"
+							width="900"
+							height="380"
+						></canvas>
+					</div>
+				</div>
+			</main>
+			<!-- page-content" -->
+		</div>
+		<!-- page-wrapper -->
+		<%- include('../partials/footer') -%>
+	</body>
+</html>
