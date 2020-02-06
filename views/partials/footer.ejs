@@ -29,9 +29,18 @@
 			$('.page-wrapper').addClass('toggled');
 		});
 	});
-	// $(document).ready(function() {
-	// 	$('.default')[0].click();
-	// });
+	$(document).ready(function() {
+		let urlParams = new URLSearchParams(window.location.search);
+		let entries = urlParams.entries();
+		for (pair of entries) {
+			if (pair[0] === 'clipday') {
+				$(`#${pair[1]}`)[0].click();
+			}
+			if (pair[0] === 'clipfolder') {
+				$(`#${pair[1]}`).addClass('active');
+			}
+		}
+	});
 </script>
 <!-- Bootstrap core JavaScript
     	================================================== -->
@@ -44,78 +53,4 @@
 <script src="../../js/feather.min.js"></script>
 <script>
 	feather.replace();
-</script>
-
-<script src="../../js/Chart.min.js"></script>
-<script>
-	window.chartColors = {
-		red: 'rgb(255, 99, 132)',
-		orange: 'rgb(255, 159, 64)',
-		yellow: 'rgb(255, 205, 86)',
-		green: 'rgb(75, 192, 192)',
-		blue: 'rgb(54, 162, 235)',
-		purple: 'rgb(153, 102, 255)',
-		grey: 'rgb(201, 203, 207)'
-	};
-	var ctx = document.getElementById('myChart');
-	var myChart = new Chart(ctx, {
-		type: 'line',
-		data: {
-			labels: [
-				'Sunday',
-				'Monday',
-				'Tuesday',
-				'Wednesday',
-				'Thursday',
-				'Friday',
-				'Saturday'
-			],
-			datasets: [
-				{
-					label: 'Sentry clips',
-					data: [10, 3, 2, 1, 4, 6, 9],
-					lineTension: 0,
-					backgroundColor: 'transparent',
-					borderColor: window.chartColors.red,
-					borderWidth: 2,
-					cubicInterpolationMode: 'monotone',
-					pointBackgroundColor: window.chartColors.red
-				},
-				{
-					label: 'Saved Clips',
-					data: [1, 2, 0, 5, 2, 1, 0],
-					lineTension: 0,
-					backgroundColor: 'transparent',
-					borderColor: window.chartColors.blue,
-					pointBackgroundColor: window.chartColors.blue,
-					borderWidth: 2
-				}
-			]
-		},
-		options: {
-			responsive: true,
-			tooltips: {
-				mode: 'index'
-			},
-			scales: {
-				xAxes: [
-					{
-						display: true,
-						scaleLabel: {
-							display: true
-						}
-					}
-				],
-				yAxes: [
-					{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						}
-					}
-				]
-			}
-		}
-	});
 </script>

@@ -47,16 +47,18 @@
 				</li>
 				<%
 				Object.keys(menuItems[menuItemKey].items).forEach(function(dateEvent){
+				%> <% let eventDay = new
+				Date(menuItems[menuItemKey].items[dateEvent].time).toLocaleDateString();
+				let eventCount = menuItems[menuItemKey].items[dateEvent].events.length;
 				%>
 				<li class="sidebar-dropdown">
-					<a href="#">
+					<a href="#" id="<%= eventDay %>">
 						<i class="fa fa-calendar-alt"></i>
 						<span>
-							<%= new
-							Date(menuItems[menuItemKey].items[dateEvent].time).toLocaleDateString()%>
+							<%= eventDay %>
 						</span>
 						<span class="badge badge-pill badge-warning notification">
-							<%= menuItems[menuItemKey].items[dateEvent].events.length %>
+							<%= eventCount %>
 						</span>
 					</a>
 					<div class="sidebar-submenu">
@@ -65,7 +67,12 @@
 							menuItems[menuItemKey].items[dateEvent].events.forEach(function(event){
 							%>
 							<li>
-								<a href="#"><%=new Date(event.time).toLocaleTimeString() %></a>
+								<a
+									id="<%= event.folderName %>"
+									href="/event?cliptype=<%= menuItems[menuItemKey].folderName %>&clipday=<%= eventDay %>&clipfolder=<%= event.folderName %>"
+								>
+									<%=new Date(event.time).toLocaleTimeString() %>
+								</a>
 							</li>
 							<% }); %>
 						</ul>

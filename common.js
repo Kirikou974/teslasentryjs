@@ -39,6 +39,7 @@ async function getClips(clipType) {
 	let folders = await getFolderList(clipType.folderName);
 	let eventDates = {};
 	eventDates.menuTitle = clipType.menuTitle;
+	eventDates.folderName = clipType.folderName;
 	eventDates.menuIcon = clipType.menuIcon;
 	eventDates.items = {};
 

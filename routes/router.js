@@ -4,13 +4,30 @@ const { exec } = require('child_process');
 const common = require('../common');
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('*', (req, res, next) => {
 	common.getAllEvents().then(events => {
-		res.render('pages/index', {
-			menuItems: events
-		});
+		req.menuItems = events;
+		next();
+		// res.render('pages/index', {
+		// 	menuItems: events
+		// });
 	});
 });
+
+router.get('/', (req, res) => {
+	res.redirect('/home');
+});
+
+router.get(['/:pageName'], (req, res) => {
+	res.render('pages/index', {
+		menuItems: req.menuItems,
+		pageName: req.params.pageName,
+		clipType: req.query.cliptype,
+		clipFolder: req.query.clipfolder,
+		clipFolder: req.query.clipday
+	});
+});
+
 router.get('/report', (req, res) => {
 	res.render('pages/index');
 });

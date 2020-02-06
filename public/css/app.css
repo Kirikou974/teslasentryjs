@@ -452,6 +452,7 @@ body {
 	.sidebar-submenu
 	li
 	a:hover:before,
+.chiller-theme .sidebar-wrapper .sidebar-dropdown .sidebar-submenu li a.active,
 .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu:focus + span,
 .chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active a i {
 	color: #16c7ff;
