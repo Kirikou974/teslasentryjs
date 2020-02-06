@@ -9,60 +9,38 @@
 				<i class="fas fa-times"></i>
 			</div>
 		</div>
-		<div class="sidebar-menu">
+		<!-- <div class="sidebar-menu">
 			<ul>
 				<li class="header-menu">
 					<span data-feather="activity" class="feather-header"></span>
 					<span><a class="link-header" href="/">Reports</a></span>
 				</li>
 			</ul>
-		</div>
+		</div> -->
+		<% Object.keys(menuItems).forEach(function(menuItemKey) { %>
 
 		<div class="sidebar-menu">
 			<ul>
 				<li class="header-menu">
 					<span data-feather="eye" class="feather-header"></span>
-					<span>Sentry clips</span>
+					<span><%= menuItems[menuItemKey].menuTitle %></span>
 				</li>
+				<%
+				Object.keys(menuItems[menuItemKey].items).forEach(function(dateEvent){
+				%>
 				<li class="sidebar-dropdown">
-					<% Object.keys(sentryEvents).forEach(function(sentryEvent){ %>
 					<a href="#">
 						<i class="fa fa-calendar-alt"></i>
 						<span>
 							<%= new
-							Date(sentryEvents[sentryEvent].time).toLocaleDateString()%>
+							Date(menuItems[menuItemKey].items[dateEvent].time).toLocaleDateString()%>
 						</span>
 					</a>
 					<div class="sidebar-submenu">
 						<ul>
-							<% sentryEvents[sentryEvent].events.forEach(function(event){ %>
-							<li>
-								<a href="#"><%=new Date(event.time).toLocaleTimeString() %></a>
-							</li>
-							<% }); %>
-						</ul>
-					</div>
-					<% }); %>
-				</li>
-			</ul>
-		</div>
-		<div class="sidebar-menu">
-			<ul>
-				<li class="header-menu">
-					<span data-feather="camera" class="feather-header"></span>
-					<span>Saved clips</span>
-				</li>
-				<% Object.keys(savedEvents).forEach(function(savedEvent){ %>
-				<li class="sidebar-dropdown">
-					<a href="#">
-						<i class="fa fa-calendar-alt"></i>
-						<span>
-							<%= new Date(savedEvents[savedEvent].time).toLocaleDateString() %>
-						</span>
-					</a>
-					<div class="sidebar-submenu">
-						<ul>
-							<% savedEvents[savedEvent].events.forEach(function(event){ %>
+							<%
+							menuItems[menuItemKey].items[dateEvent].events.forEach(function(event){
+							%>
 							<li>
 								<a href="#"><%=new Date(event.time).toLocaleTimeString() %></a>
 							</li>
@@ -73,6 +51,7 @@
 				<% }); %>
 			</ul>
 		</div>
+		<% });%>
 		<!-- sidebar-menu  -->
 	</div>
 </nav>

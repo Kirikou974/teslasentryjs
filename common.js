@@ -3,8 +3,14 @@ const { promisify } = require('util');
 const readdirAsync = promisify(fs.readdir);
 
 const clipTypes = {
-	SENTRY: 'SentryClips',
-	SAVED: 'SavedClips'
+	SENTRY: {
+		folderName: 'SentryClips',
+		menuTitle: 'Sentry clips'
+	},
+	SAVED: {
+		folderName: 'SavedClips',
+		menuTitle: 'Saved clips'
+	}
 };
 
 var exports = (module.exports = {});
@@ -13,8 +19,8 @@ function checkFolder(folder) {
 	return !folder.name.startsWith('.') && folder.isDirectory();
 }
 
-async function getFolderList(clipType) {
-	let folders = await readdirAsync(`events/${clipType}`, {
+async function getFolderList(subFolderName) {
+	let folders = await readdirAsync(`events/${subFolderName}`, {
 		withFileTypes: true
 	});
 	let filteredFolders = folders.filter(checkFolder);
@@ -28,8 +34,11 @@ async function getClips(clipType) {
 	//Rebuild date from folder name
 	// return await getFolderList(clipType);
 
-	let folders = await getFolderList(clipType);
+	let folders = await getFolderList(clipType.folderName);
 	let eventDates = {};
+	eventDates.menuTitle = clipType.menuTitle;
+	eventDates.items = {};
+
 	folders.forEach(folder => {
 		let folderNameArray = folder.split('_');
 		let folderTime = folderNameArray[1].replace(/-/gi, ':');
@@ -44,14 +53,13 @@ async function getClips(clipType) {
 			folderName: folder
 		};
 
-		if (eventDates[folderShortDateTime] == undefined) {
-			eventDates[folderShortDateTime] = {};
-			eventDates[folderShortDateTime].events = [];
-			eventDates[folderShortDateTime].time = folderShortDateTime;
+		if (eventDates.items[folderShortDateTime] == undefined) {
+			eventDates.items[folderShortDateTime] = {};
+			eventDates.items[folderShortDateTime].events = [];
+			eventDates.items[folderShortDateTime].time = folderShortDateTime;
 		}
-		eventDates[folderShortDateTime].events.push(event);
+		eventDates.items[folderShortDateTime].events.push(event);
 	});
-
 	return eventDates;
 }
 exports.getReportData = () => {
@@ -61,8 +69,8 @@ exports.getReportData = () => {
 
 exports.getAllEvents = async () => {
 	let events = {};
-	events.savedEvents = await getClips(clipTypes.SAVED);
 	events.sentryEvents = await getClips(clipTypes.SENTRY);
+	events.savedEvents = await getClips(clipTypes.SAVED);
 	return events;
 };
 
