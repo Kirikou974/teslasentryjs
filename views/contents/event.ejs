@@ -4,15 +4,21 @@
 	<div class="row">
 		<div class="form-group col-md-12">
 			<div class="card rounded-0 p-0 shadow-sm">
-				<!-- poster="<%#= image %>" -->
-				<video id="video" width="100%" preload="metadata" controls></video>
+				<video
+					id="video"
+					width="100%"
+					preload="metadata"
+					poster="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/poster"
+					controls
+				></video>
 				<script>
 					// Later on, after some condition has been met, set video source to the
 					// preloaded video URL.
-					// video.src = 'http://localhost:3000/video';
-					// video.play().then(_ => {
-					// If preloaded video URL was already cached, playback started immediately.
-					// });
+					video.src =
+						'/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>';
+					video.play().then(_ => {
+						// If preloaded video URL was already cached, playback started immediately.
+					});
 				</script>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { promisify } = require('util');
 const readdirAsync = promisify(fs.readdir);
+const { exec } = require('child_process');
 
 const clipTypes = {
 	SENTRY: {
@@ -32,6 +33,7 @@ async function getFolderList(subFolderName) {
 	});
 	return results;
 }
+
 async function getClips(clipType) {
 	//Rebuild date from folder name
 	// return await getFolderList(clipType);
@@ -69,6 +71,25 @@ async function getClips(clipType) {
 exports.getReportData = () => {
 	//TODO : implement function
 	return null;
+};
+
+exports.getPosterImage = async (videoId, imageFolderPath) => {
+	let imagePath = `${imageFolderPath}/${videoId}.jpg`;
+	await fs.access(imagePath, fs.F_OK, err => {
+		if (err) {
+			exec(
+				//TODO change to dynamic variables
+				`ffmpeg -i events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4 -ss 00:00:04.00 -r 1 -an -vframes 1 -f mjpeg ${imagePath}`,
+				(error, stdout, stderr) => {
+					if (error) {
+						console.log(error);
+						throw error;
+					}
+				}
+			);
+		}
+	});
+	return imagePath;
 };
 
 exports.getAllEvents = async () => {

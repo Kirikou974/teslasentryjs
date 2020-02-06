@@ -1,25 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-	<%- include('../partials/header') -%>
+	<%- include('../partials/header', clipParams) -%>
 	<body>
 		<div class="page-wrapper chiller-theme toggled">
 			<%- include('../partials/menu', menuItems) -%>
 
 			<!-- sidebar-wrapper  -->
 			<main class="page-content">
-				<%- include('../contents/' + pageName, ) -%>
-				<!-- <div class="container-fluid">
-					<h2>Report</h2>
-					<hr />
-					<div class="row">
-						<canvas
-							class="my-4 w-100"
-							id="myChart"
-							width="900"
-							height="380"
-						></canvas>
-					</div>
-				</div> -->
+				<%- include('../contents/' + pageName) -%>
 			</main>
 			<!-- page-content" -->
 		</div>
