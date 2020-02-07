@@ -30,31 +30,13 @@ router.get('/video/:cliptype/:id/poster.jpg', (req, res) => {
 	});
 });
 
-router.get('/video/:cliptype/:id', (req, res) => {
-	console.log('get video clip');
+router.get('/video/:cliptype/:id/:side', (req, res) => {
 	let videoType = req.params.cliptype;
 	let videoId = req.params.id;
-	let videoPath = `events/${videoType}/${videoId}/2020-01-16_12-44-13-front`;
-	// const path = `tmp/_output.mp4`;
-	fs.access(`${videoPath}_output.mp4`, fs.F_OK, err => {
-		if (err) {
-			console.log(err);
-			//Fix for Chrome as tesla video start with negative time :
-			// https://www.reddit.com/r/teslamotors/comments/chpbsp/2019244_dashcam_video_not_playable_in_browser/
-			//
-			exec(
-				`ffmpeg -i ${videoPath}.mp4 -c:v copy ${videoPath}_output.mp4`,
-				(error, stdout, stderr) => {
-					if (error) {
-						res.sendStatus(500);
-					} else {
-						common.streamVideo(req, res, `${videoPath}_output.mp4`);
-					}
-				}
-			);
-		} else {
-			common.streamVideo(req, res, `${videoPath}_output.mp4`);
-		}
+	let videoSide = req.params.side;
+	let videoPath = `events/${videoType}/${videoId}`;
+	common.getVideoStream(videoPath, videoSide).then(() => {
+		common.sendVideoStream(req, res, `${videoPath}/${videoSide}.mp4`);
 	});
 });
 

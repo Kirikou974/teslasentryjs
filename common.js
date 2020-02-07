@@ -84,8 +84,7 @@ exports.getPosterImage = async (videoId, imageFolderPath) => {
 					`ffmpeg -i events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4 -r 1 -an -vframes 1 -f mjpeg ${imagePath}`,
 					(error, stdout, stderr) => {
 						if (error) {
-							reject();
-							throw error;
+							reject(error);
 						} else {
 							resolve();
 						}
@@ -107,7 +106,7 @@ exports.getAllEvents = async () => {
 	return events;
 };
 
-exports.streamVideo = (req, res, path) => {
+exports.sendVideoStream = (req, res, path) => {
 	let stat = fs.statSync(path);
 	let total = stat.size;
 
@@ -139,3 +138,53 @@ exports.streamVideo = (req, res, path) => {
 			res.end(err);
 		});
 };
+
+exports.getVideoStream = async (videoPath, videoSide) => {
+	let fullVideoPath = `${videoPath}/${videoSide}.mp4`;
+
+	try {
+		await accessAsync(fullVideoPath, fs.F_OK);
+	} catch (error) {
+		if (error.errno == -2) {
+			await new Promise((resolve, reject) => {
+				console.log('getVideoStream');
+				// console.log(
+				// 	`ffmpeg -f concat -safe 0 -i <(for f in ${videoPath}/*${videoSide}.mp4; do echo "file '$PWD/$f'"; done) -c copy ${videoSide}.mp4`
+				// );
+
+				console.log(
+					`for f in ${videoPath}/*${videoSide}.mp4; do echo "file '$PWD/$f'"; done`
+				);
+				exec(
+					`ffmpeg -f concat -safe 0 -i <(for f in ${videoPath}/*${videoSide}.mp4; do echo "file '$PWD/$f'"; done) -c copy ${videoSide}.mp4`,
+					(error, stdout, stderr) => {
+						if (error) {
+							reject(error);
+						} else {
+							resolve();
+						}
+					}
+				);
+			});
+		}
+	}
+};
+// fs.access(`${videoPath}_output.mp4`, fs.F_OK, err => {
+// 	if (err) {
+// 		//Fix for Chrome as tesla video start with negative time :
+// 		// https://www.reddit.com/r/teslamotors/comments/chpbsp/2019244_dashcam_video_not_playable_in_browser/
+// 		//
+// 		exec(
+// 			`ffmpeg -f concat -safe 0 -i <(for f in ${videoPath}/*${videoSide}.mp4; do echo "file '$PWD/$f'"; done) -c copy ${videoSide}.mp4``ffmpeg -i ${videoPath}.mp4 -c:v copy ${videoSide}.mp4`,
+// 			(error, stdout, stderr) => {
+// 				if (error) {
+// 					res.sendStatus(500);
+// 				} else {
+// 					common.streamVideo(req, res, `${videoPath}/${videoSide}.mp4`);
+// 				}
+// 			}
+// 		);
+// 	} else {
+// 		common.streamVideo(req, res, `${videoPath}/${videoSide}.mp4`);
+// 	}
+// });
