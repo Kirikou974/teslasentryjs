@@ -504,3 +504,8 @@ body {
 .link-header {
 	padding: 0px;
 }
+
+.video {
+	width: 100%;
+	height: 100%;
+}

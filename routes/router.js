@@ -17,6 +17,10 @@ router.get('*', (req, res, next) => {
 	});
 });
 
+router.get('/favicon.ico', (req, res, next) => {
+	res.sendStatus(404);
+});
+
 router.get('/', (req, res) => {
 	res.redirect('/home');
 });

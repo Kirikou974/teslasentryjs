@@ -1,100 +1,100 @@
-<div class="container-fluid" id="videoContainer">
+<div class="container" id="videoContainer">
 	<h2><%= clipParams.clipFolder %></h2>
 	<hr />
-	<div class="row">
-		<div class="form-group col-md-12">
-			<div>
-				<p id="buttons">
-					<script
-						text="javascript"
-						src="https://mcorp.no/lib/mediasync.js"
-					></script>
-					<button id="tostart">Reset</button>
-					<button id="pause">Pause</button>
-					<b><button id="forward">Play</button></b>
-					<button id="skipforward">Skip 5 Ahead</button>
-					<button id="skipbackward">Skip 5 Back</button>
-				</p>
-				<span id="position"></span><br />
-				<video id="videofront" width="50%" preload="metadata" controls></video>
+	<p id="buttons">
+		<script text="javascript" src="https://mcorp.no/lib/mediasync.js"></script>
+		<button id="tostart">Reset</button>
+		<button id="pause">Pause</button>
+		<b><button id="forward">Play</button></b>
+		<button id="skipforward">Skip 5 Ahead</button>
+		<button id="skipbackward">Skip 5 Back</button>
+	</p>
+	<span id="position"></span><br />
 
-				<video id="videoback" width="50%" preload="metadata" controls></video>
-
-				<video
-					id="videoleftrepeater"
-					width="50%"
-					preload="metadata"
-					controls
-				></video>
-				<video
-					id="videorighttrepeater"
-					width="50%"
-					preload="metadata"
-					controls
-				></video>
-				<script>
-					// Later on, after some condition has been met, set video source to the
-					// preloaded video URL.
-					let baseVideoUrl =
-						'/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>';
-					videofront.src = `${baseVideoUrl}/front`;
-					videofront.poster = `${baseVideoUrl}/front/poster.jpg`;
-					videoback.src = `${baseVideoUrl}/back`;
-					videoback.poster = `${baseVideoUrl}/back/poster.jpg`;
-					videoleftrepeater.src = `${baseVideoUrl}/left_repeater`;
-					videoleftrepeater.poster = `${baseVideoUrl}/left_repeater/poster.jpg`;
-					videorighttrepeater.src = `${baseVideoUrl}/right_repeater`;
-					videorighttrepeater.poster = `${baseVideoUrl}/right_repeater/poster.jpg`;
-
-					var run = function(timingProvider) {
-						// timing object
-						var to = new TIMINGSRC.TimingObject({
-							provider: timingProvider,
-							range: [0, 100]
-						});
-
-						// set up button click handlers
-						var buttonsElem = document.getElementById('buttons');
-						var self = this;
-						buttonsElem.onclick = function(e) {
-							var elem,
-								evt = e ? e : event;
-							if (evt.srcElement) elem = evt.srcElement;
-							else if (evt.target) elem = evt.target;
-							if (elem.id === 'pause') {
-								to.update({ velocity: 0.0 });
-							} else if (elem.id === 'tostart') {
-								to.update({ position: 0.0 });
-							} else if (elem.id === 'skipforward') {
-								to.update({ position: to.query().position + 5 });
-							} else if (elem.id === 'skipbackward') {
-								to.update({ position: to.query().position - 5 });
-							} else if (elem.id === 'forward') {
-								var v = to.query();
-								if (v.position === 100 && v.velocity === 0) {
-									to.update({ position: 0.0, velocity: 1.0 });
-								} else to.update({ velocity: 1.0 });
-							} else if (elem.id === 'toend') {
-								to.update({ position: 100.0 });
-							}
-						};
-
-						// set up refresh of timingobject position
-						to.on('timeupdate', function() {
-							document.getElementById(
-								'position'
-							).innerHTML = to.query().position.toFixed(2);
-						});
-
-						// set up video sync
-						var sync1 = MCorp.mediaSync(document.getElementById('player1'), to);
-
-						// set up video sync
-						var sync2 = MCorp.mediaSync(document.getElementById('player2'), to);
-					};
-					run();
-				</script>
-			</div>
+	<div class="row no-gutters">
+		<div class="col pr-sm-1 pb-sm-0">
+			<video id="videoleftrepeater" class="video" preload="metadata"></video>
+		</div>
+		<div class="col pr-sm-1 pb-sm-0">
+			<video id="videofront" class="video" preload="metadata"></video>
+		</div>
+		<div class="col pr-sm-1 pb-sm-0">
+			<video id="videorightrepeater" class="video" preload="metadata"></video>
 		</div>
 	</div>
+	<div class="row no-gutters">
+		<div class="col pr-sm-1 pb-sm-0"></div>
+		<div class="col pr-sm-1 pb-sm-0">
+			<video id="videoback" class="video" preload="metadata"></video>
+		</div>
+		<div class="col pr-sm-1 pb-sm-0"></div>
+	</div>
 </div>
+<script>
+	// Later on, after some condition has been met, set video source to the
+	// preloaded video URL.
+	let baseVideoUrl =
+		'/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>';
+	videofront.src = `${baseVideoUrl}/front`;
+	videofront.poster = `${baseVideoUrl}/front/poster.jpg`;
+	videoback.src = `${baseVideoUrl}/back`;
+	videoback.poster = `${baseVideoUrl}/back/poster.jpg`;
+	videoleftrepeater.src = `${baseVideoUrl}/left_repeater`;
+	videoleftrepeater.poster = `${baseVideoUrl}/left_repeater/poster.jpg`;
+	videorightrepeater.src = `${baseVideoUrl}/right_repeater`;
+	videorightrepeater.poster = `${baseVideoUrl}/right_repeater/poster.jpg`;
+
+	var run = function(timingProvider) {
+		// timing object
+		var to = new TIMINGSRC.TimingObject({
+			provider: timingProvider,
+			range: [0, 100]
+		});
+
+		// set up button click handlers
+		var buttonsElem = document.getElementById('buttons');
+		var self = this;
+		buttonsElem.onclick = function(e) {
+			var elem,
+				evt = e ? e : event;
+			if (evt.srcElement) elem = evt.srcElement;
+			else if (evt.target) elem = evt.target;
+			if (elem.id === 'pause') {
+				to.update({ velocity: 0.0 });
+			} else if (elem.id === 'tostart') {
+				to.update({ position: 0.0 });
+			} else if (elem.id === 'skipforward') {
+				to.update({ position: to.query().position + 5 });
+			} else if (elem.id === 'skipbackward') {
+				to.update({ position: to.query().position - 5 });
+			} else if (elem.id === 'forward') {
+				var v = to.query();
+				if (v.position === 100 && v.velocity === 0) {
+					to.update({ position: 0.0, velocity: 1.0 });
+				} else to.update({ velocity: 1.0 });
+			} else if (elem.id === 'toend') {
+				to.update({ position: 100.0 });
+			}
+		};
+
+		// set up refresh of timingobject position
+		to.on('timeupdate', function() {
+			document.getElementById(
+				'position'
+			).innerHTML = to.query().position.toFixed(2);
+		});
+
+		// set up video sync
+		var sync1 = MCorp.mediaSync(document.getElementById('videofront'), to);
+		var sync2 = MCorp.mediaSync(document.getElementById('videoback'), to);
+		var sync3 = MCorp.mediaSync(
+			document.getElementById('videoleftrepeater'),
+			to
+		);
+		var sync4 = MCorp.mediaSync(
+			document.getElementById('videorightrepeater'),
+			to
+		);
+	};
+	run();
+</script>
