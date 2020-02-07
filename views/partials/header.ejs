@@ -17,10 +17,36 @@
 	<script src="../../js/jquery.min.js"></script>
 	<script src="../../js/bootstrap.min.js"></script>
 
-	<!-- Preload video -->
+	<script
+		text="javascript"
+		src="https://webtiming.github.io/timingsrc/lib/timingsrc-v2.js"
+	></script>
+	<script text="javascript" src="https://mcorp.no/lib/mediasync.js"></script>
+	<script
+		text="javascript"
+		src="https://www.mcorp.no/lib/mcorp-2.0.js"
+	></script>
+	<% if (clipParams.clipType && clipParams.clipFolder) { %>
+	<!-- Preload videos -->
 	<link
 		rel="preload"
 		as="video"
 		href="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/front"
 	/>
+	<link
+		rel="preload"
+		as="video"
+		href="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/back"
+	/>
+	<link
+		rel="preload"
+		as="video"
+		href="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/left_repeater"
+	/>
+	<link
+		rel="preload"
+		as="video"
+		href="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/right_repeater"
+	/>
+	<% } %>
 </head>

@@ -72,21 +72,21 @@ exports.getReportData = () => {
 	return null;
 };
 
-exports.getPosterImage = async (videoId, imageFolderPath) => {
-	let imagePath = `${imageFolderPath}/${videoId}.jpg`;
+exports.getPosterImage = async (videoPath, videoSide, imageFolderPath) => {
+	let exportImagePath = `${imageFolderPath}/${videoSide}.jpg`;
 	try {
-		await accessAsync(imagePath, fs.F_OK);
+		await accessAsync(exportImagePath, fs.F_OK);
+		return exportImagePath;
 	} catch (error) {
 		if (error.errno == -2) {
 			await new Promise((resolve, reject) => {
 				exec(
-					//TODO change to dynamic variables
-					`ffmpeg -i events/SavedClips/2020-01-16_09-12-36/2020-01-16_09-12-32-front_output.mp4 -r 1 -an -vframes 1 -f mjpeg ${imagePath}`,
+					`ffmpeg -i ${videoPath}/${videoSide}.mp4 -r 1 -an -vframes 1 -f mjpeg ${exportImagePath}`,
 					(error, stdout, stderr) => {
 						if (error) {
 							reject(error);
 						} else {
-							resolve();
+							resolve(exportImagePath);
 						}
 					}
 				);
@@ -95,8 +95,6 @@ exports.getPosterImage = async (videoId, imageFolderPath) => {
 			throw error;
 		}
 	}
-
-	return imagePath;
 };
 
 exports.getAllEvents = async () => {
@@ -139,29 +137,29 @@ exports.sendVideoStream = (req, res, path) => {
 		});
 };
 
+exports.getVideoPath = (eventsFolderName, videoType, videoId) => {
+	let videoPath = `${eventsFolderName}/${videoType}/${videoId}`;
+	return videoPath;
+};
+
 exports.getVideoStream = async (videoPath, videoSide) => {
-	let fullVideoPath = `${videoPath}/${videoSide}.mp4`;
+	let fullExportVideoPath = `${videoPath}/${videoSide}`;
 
 	try {
-		await accessAsync(fullVideoPath, fs.F_OK);
+		await accessAsync(`${fullExportVideoPath}.mp4`, fs.F_OK);
+		return `${fullExportVideoPath}.mp4`;
 	} catch (error) {
 		if (error.errno == -2) {
-			await new Promise((resolve, reject) => {
-				console.log('getVideoStream');
-				// console.log(
-				// 	`ffmpeg -f concat -safe 0 -i <(for f in ${videoPath}/*${videoSide}.mp4; do echo "file '$PWD/$f'"; done) -c copy ${videoSide}.mp4`
-				// );
-
-				console.log(
-					`for f in ${videoPath}/*${videoSide}.mp4; do echo "file '$PWD/$f'"; done`
-				);
+			return new Promise((resolve, reject) => {
 				exec(
-					`ffmpeg -f concat -safe 0 -i <(for f in ${videoPath}/*${videoSide}.mp4; do echo "file '$PWD/$f'"; done) -c copy ${videoSide}.mp4`,
+					`for f in ${videoPath}/*-${videoSide}.mp4; do echo "file '$PWD/$f'"; done > ${fullExportVideoPath}.txt;` +
+						`ffmpeg -f concat -safe 0 -i ${fullExportVideoPath}.txt -c copy ${fullExportVideoPath}.mp4;` +
+						`rm ${videoPath}/*-${videoSide}.mp4`,
 					(error, stdout, stderr) => {
 						if (error) {
 							reject(error);
 						} else {
-							resolve();
+							resolve(`${fullExportVideoPath}.mp4`);
 						}
 					}
 				);
@@ -169,22 +167,3 @@ exports.getVideoStream = async (videoPath, videoSide) => {
 		}
 	}
 };
-// fs.access(`${videoPath}_output.mp4`, fs.F_OK, err => {
-// 	if (err) {
-// 		//Fix for Chrome as tesla video start with negative time :
-// 		// https://www.reddit.com/r/teslamotors/comments/chpbsp/2019244_dashcam_video_not_playable_in_browser/
-// 		//
-// 		exec(
-// 			`ffmpeg -f concat -safe 0 -i <(for f in ${videoPath}/*${videoSide}.mp4; do echo "file '$PWD/$f'"; done) -c copy ${videoSide}.mp4``ffmpeg -i ${videoPath}.mp4 -c:v copy ${videoSide}.mp4`,
-// 			(error, stdout, stderr) => {
-// 				if (error) {
-// 					res.sendStatus(500);
-// 				} else {
-// 					common.streamVideo(req, res, `${videoPath}/${videoSide}.mp4`);
-// 				}
-// 			}
-// 		);
-// 	} else {
-// 		common.streamVideo(req, res, `${videoPath}/${videoSide}.mp4`);
-// 	}
-// });
