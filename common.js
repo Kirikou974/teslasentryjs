@@ -68,14 +68,14 @@ async function getClips(clipType) {
 	return eventDates;
 }
 
-exports.getVideoPoster = async (videoPath, videoSide, imageFolderPath) => {
-	let exportImagePath = `${imageFolderPath}/${videoSide}.jpg`;
+exports.getVideoPoster = async (videoPath, videoSide) => {
+	let exportImagePath = `${videoPath}/${videoSide}.jpg`;
 	try {
 		await accessAsync(exportImagePath, fs.F_OK);
 		return exportImagePath;
 	} catch (error) {
 		if (error.errno == -2) {
-			await new Promise((resolve, reject) => {
+			return new Promise((resolve, reject) => {
 				exec(
 					`ffmpeg -i ${videoPath}/${videoSide}.mp4 -r 1 -an -vframes 1 -f mjpeg ${exportImagePath}`,
 					(error, stdout, stderr) => {
@@ -148,7 +148,12 @@ exports.getVideo = async (videoPath, videoSide) => {
 		if (error.errno == -2) {
 			return new Promise((resolve, reject) => {
 				exec(
-					`for f in ${videoPath}/*-${videoSide}.mp4; do echo "file '$PWD/$f'"; done > ${fullExportVideoPath}.txt;` +
+					//https://unix.stackexchange.com/questions/239772/bash-iterate-file-list-except-when-empty
+					//In bash, you can set the nullglob option so that a pattern that matches nothing "disappears",
+					//rather than treated as a literal string
+					`shopt -s nullglob;` +
+						`for f in ${videoPath}/*-${videoSide}.mp4; do echo "file '$PWD/$f'";` +
+						`done > ${fullExportVideoPath}.txt;` +
 						`ffmpeg -f concat -safe 0 -i ${fullExportVideoPath}.txt -c copy ${fullExportVideoPath}.mp4;` +
 						`rm ${videoPath}/*-${videoSide}.mp4`,
 					(error, stdout, stderr) => {

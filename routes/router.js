@@ -3,7 +3,6 @@ const path = require('path');
 const common = require('../common');
 const router = express.Router();
 const eventsFolderName = 'events';
-const videoImagesFolderName = 'videoimages';
 
 router.get('*', (req, res, next) => {
 	common.getAllEvents().then(events => {
@@ -27,9 +26,12 @@ router.get('/video/:cliptype/:id/:side/poster.jpg', (req, res) => {
 	let videoSide = req.params.side;
 	let videoPath = common.getVideoPath(eventsFolderName, videoType, videoId);
 	common
-		.getVideoPoster(videoPath, videoSide, videoImagesFolderName)
+		.getVideoPoster(videoPath, videoSide)
 		.then(imagePath => {
 			res.sendFile(path.join(__dirname, `../${imagePath}`));
+		})
+		.catch(error => {
+			res.sendStatus(404);
 		});
 });
 
@@ -39,9 +41,14 @@ router.get('/video/:cliptype/:id/:side', (req, res) => {
 	let videoId = req.params.id;
 	let videoSide = req.params.side;
 	let videoPath = common.getVideoPath(eventsFolderName, videoType, videoId);
-	common.getVideo(videoPath, videoSide).then(fullVideoPath => {
-		common.streamVideo(req, res, fullVideoPath);
-	});
+	common
+		.getVideo(videoPath, videoSide)
+		.then(fullVideoPath => {
+			common.streamVideo(req, res, fullVideoPath);
+		})
+		.catch(error => {
+			res.sendStatus(404);
+		});
 });
 
 router.get(['/:pageName'], (req, res) => {
