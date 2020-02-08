@@ -1,99 +1,67 @@
 <div class="container" id="videoContainer">
 	<h2>Event : <%= clipParams.clipFolder %></h2>
 	<hr />
-	<p id="buttons">
-		<button id="tostart">Reset</button>
-		<button id="pause">Pause</button>
-		<b><button id="forward">Play</button></b>
-		<button id="skipforward">Skip 5 Ahead</button>
-		<button id="skipbackward">Skip 5 Back</button>
-	</p>
-	<span id="position"></span><br />
-
+	<div id="buttons" class="video-controls">
+		<button
+			id="skipbackward"
+			onclick="skipVideoBackward()"
+			class="btn btn-backward custombtn"
+		>
+			<span class="fa fa-undo"></span>
+		</button>
+		<button id="play" onclick="playVideo(this)" class="btn btn-play custombtn">
+			<span class="fa fa-play"></span>
+		</button>
+		<button
+			id="pause"
+			onclick="pauseVideo()"
+			style="display: none;"
+			class="btn btn-pause custombtn"
+		>
+			<span class="fa fa-pause"></span>
+		</button>
+		<button
+			id="skipforward"
+			onclick="skipVideoForward()"
+			class="btn btn-forward custombtn"
+		>
+			<span class="fa fa-redo"></span>
+		</button>
+		<!-- <button
+			id="accelerate"
+			onclick="accelerateVideo()"
+			class="btn btn-accelerate custombtn"
+		>
+			<span class="fa fa-fast-forward"></span>
+		</button> -->
+		<button id="stop" onclick="stopVideo()" class="btn btn-stop custombtn">
+			<span class="fa fa-stop"></span>
+		</button>
+	</div>
+	<input id="progress" class="seekbar" value="0" type="range" min="0" max="100" onchange="changeVideoPosition()"></input>
 	<div class="row no-gutters">
-		<div class="col pr-sm-1 pb-sm-0">
-			<video id="videoleftrepeater" class="video" preload="metadata"></video>
+		<div class="col pr-sm-1 pb-sm-1">
+			<video id="videoleftrepeater" preload="metadata"></video>
 		</div>
-		<div class="col pr-sm-1 pb-sm-0">
-			<video id="videofront" class="video" preload="metadata"></video>
+		<div class="col pr-sm-1 pb-sm-1">
+			<video id="videofront" preload="auto"></video>
 		</div>
-		<div class="col pr-sm-1 pb-sm-0">
-			<video id="videorightrepeater" class="video" preload="metadata"></video>
+		<div class="col pr-sm-1 pb-sm-1">
+			<video id="videorightrepeater" preload="metadata"></video>
 		</div>
 	</div>
 	<div class="row no-gutters">
-		<div class="col pr-sm-1 pb-sm-0"></div>
-		<div class="col pr-sm-1 pb-sm-0">
-			<video id="videoback" class="video" preload="metadata"></video>
+		<div class="col pr-sm-1 pb-sm-1"></div>
+		<div class="col pr-sm-1 pb-sm-1">
+			<video id="videoback" preload="metadata"></video>
 		</div>
-		<div class="col pr-sm-1 pb-sm-0"></div>
+		<div class="col pr-sm-1 pb-sm-1"></div>
 	</div>
 </div>
 <script>
-	// Later on, after some condition has been met, set video source to the
-	// preloaded video URL.
 	let baseVideoUrl =
 		'/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>';
-	videofront.src = `${baseVideoUrl}/front`;
-	videofront.poster = `${baseVideoUrl}/front/poster.jpg`;
-	videoback.src = `${baseVideoUrl}/back`;
-	videoback.poster = `${baseVideoUrl}/back/poster.jpg`;
-	videoleftrepeater.src = `${baseVideoUrl}/left_repeater`;
-	videoleftrepeater.poster = `${baseVideoUrl}/left_repeater/poster.jpg`;
-	videorightrepeater.src = `${baseVideoUrl}/right_repeater`;
-	videorightrepeater.poster = `${baseVideoUrl}/right_repeater/poster.jpg`;
-
-	var run = function(timingProvider) {
-		// timing object
-		var to = new TIMINGSRC.TimingObject({
-			provider: timingProvider,
-			range: [0, 100]
-		});
-
-		// set up button click handlers
-		var buttonsElem = document.getElementById('buttons');
-		var self = this;
-		buttonsElem.onclick = function(e) {
-			var elem,
-				evt = e ? e : event;
-			if (evt.srcElement) elem = evt.srcElement;
-			else if (evt.target) elem = evt.target;
-			if (elem.id === 'pause') {
-				to.update({ velocity: 0.0 });
-			} else if (elem.id === 'tostart') {
-				to.update({ position: 0.0 });
-			} else if (elem.id === 'skipforward') {
-				to.update({ position: to.query().position + 5 });
-			} else if (elem.id === 'skipbackward') {
-				to.update({ position: to.query().position - 5 });
-			} else if (elem.id === 'forward') {
-				var v = to.query();
-				if (v.position === 100 && v.velocity === 0) {
-					to.update({ position: 0.0, velocity: 1.0 });
-				} else to.update({ velocity: 1.0 });
-			} else if (elem.id === 'toend') {
-				to.update({ position: 100.0 });
-			}
-		};
-
-		// set up refresh of timingobject position
-		to.on('timeupdate', function() {
-			document.getElementById(
-				'position'
-			).innerHTML = to.query().position.toFixed(2);
-		});
-
-		// set up video sync
-		var sync1 = MCorp.mediaSync(document.getElementById('videofront'), to);
-		var sync2 = MCorp.mediaSync(document.getElementById('videoback'), to);
-		var sync3 = MCorp.mediaSync(
-			document.getElementById('videoleftrepeater'),
-			to
-		);
-		var sync4 = MCorp.mediaSync(
-			document.getElementById('videorightrepeater'),
-			to
-		);
-	};
-	run();
+	$(document).ready(() => {
+		loadVideos(baseVideoUrl);
+	});
 </script>

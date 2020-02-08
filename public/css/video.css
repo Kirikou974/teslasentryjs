@@ -1,0 +1,27 @@
+video {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
+.video-controls {
+	padding: 1px;
+	background: rgba(0, 0, 0, 0.35);
+}
+.custombtn {
+	padding: 5px 0;
+	width: 31px;
+	font-size: 18px;
+	text-align: center;
+	color: #fff;
+	background-color: transparent;
+	border: 0;
+	cursor: pointer;
+}
+
+.progress-bar-fill {
+	/* width: 0; */
+	height: 4px;
+	background-color: #16aaff;
+	/* transition: width 0.35s linear; */
+}

@@ -10,6 +10,7 @@
 
 	<link rel="stylesheet" href="../../css/bootstrap.min.css" />
 	<link rel="stylesheet" href="../../css/app.css" />
+	<link rel="stylesheet" href="../../css/video.css" />
 	<link
 		href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
 		rel="stylesheet"
@@ -20,8 +21,11 @@
 	<!-- https://github.com/webtiming/timingsrc to sync multiple videos -->
 	<script text="javascript" src="../../js/mediasync/timingsrc.js"></script>
 	<script text="javascript" src="../../js/mediasync/mediasync.js"></script>
-	<script text="javascript" src="../../js/mediasync/mcorp-2.0.js"></script>
+	<script text="javascript" src="../../js/mediasync/mcorp.js"></script>
+
 	<% if (clipParams.clipType && clipParams.clipFolder) { %>
+	<!-- Video controls -->
+	<script src="../../js/video.js"></script>
 	<!-- Preload videos -->
 	<link
 		rel="preload"
