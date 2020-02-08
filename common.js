@@ -67,12 +67,8 @@ async function getClips(clipType) {
 	});
 	return eventDates;
 }
-exports.getReportData = () => {
-	//TODO : implement function
-	return null;
-};
 
-exports.getPosterImage = async (videoPath, videoSide, imageFolderPath) => {
+exports.getVideoPoster = async (videoPath, videoSide, imageFolderPath) => {
 	let exportImagePath = `${imageFolderPath}/${videoSide}.jpg`;
 	try {
 		await accessAsync(exportImagePath, fs.F_OK);
@@ -104,7 +100,7 @@ exports.getAllEvents = async () => {
 	return events;
 };
 
-exports.sendVideoStream = (req, res, path) => {
+exports.streamVideo = (req, res, path) => {
 	let stat = fs.statSync(path);
 	let total = stat.size;
 
@@ -142,7 +138,7 @@ exports.getVideoPath = (eventsFolderName, videoType, videoId) => {
 	return videoPath;
 };
 
-exports.getVideoStream = async (videoPath, videoSide) => {
+exports.getVideo = async (videoPath, videoSide) => {
 	let fullExportVideoPath = `${videoPath}/${videoSide}`;
 
 	try {
