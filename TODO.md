@@ -32,3 +32,4 @@
 - Logging
 - Navigation/Routing
 - Styling
+- Video merging with ffmpeg
