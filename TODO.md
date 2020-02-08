@@ -1,8 +1,8 @@
 # TODO
 
 - Slider pour naviguer dans la vidéo
-- Loading image
 - Fix navigation
+- Improve ffmpeg sync
 - Process videos before
 - Bouton pour Accélerer video
 - Bouton de Download video

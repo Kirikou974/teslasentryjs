@@ -17,15 +17,10 @@
 	<script src="../../js/jquery.min.js"></script>
 	<script src="../../js/bootstrap.min.js"></script>
 
-	<script
-		text="javascript"
-		src="https://webtiming.github.io/timingsrc/lib/timingsrc-v2.js"
-	></script>
-	<script text="javascript" src="https://mcorp.no/lib/mediasync.js"></script>
-	<script
-		text="javascript"
-		src="https://www.mcorp.no/lib/mcorp-2.0.js"
-	></script>
+	<!-- https://github.com/webtiming/timingsrc to sync multiple videos -->
+	<script text="javascript" src="../../js/mediasync/timingsrc.js"></script>
+	<script text="javascript" src="../../js/mediasync/mediasync.js"></script>
+	<script text="javascript" src="../../js/mediasync/mcorp-2.0.js"></script>
 	<% if (clipParams.clipType && clipParams.clipFolder) { %>
 	<!-- Preload videos -->
 	<link
