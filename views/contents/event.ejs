@@ -1,76 +1,80 @@
-<div class="container" id="videoContainer">
-	<h2>Event : <%= clipParams.clipFolder %></h2>
-	<hr />
-	<div class="video-controls">
-		<button
-			id="skipbackward"
-			onclick="skipVideoBackward()"
-			class="btn btn-backward custombtn"
-		>
-			<span class="fa fa-undo"></span>
-		</button>
-		<button id="play" onclick="playVideo()" class="btn btn-play custombtn">
-			<span class="fa fa-play"></span>
-		</button>
-		<button
-			id="pause"
-			onclick="pauseVideo()"
-			style="display: none;"
-			class="btn btn-pause custombtn"
-		>
-			<span class="fa fa-pause"></span>
-		</button>
-		<button
-			id="skipforward"
-			onclick="skipVideoForward()"
-			class="btn btn-forward custombtn"
-		>
-			<span class="fa fa-redo"></span>
-		</button>
-		<button id="stop" onclick="stopVideo()" class="btn btn-stop custombtn">
-			<span class="fa fa-stop"></span>
-		</button>
-		<label id="lblElapsedTime">--:--</label>
-		<span>/</span>
-		<label id="lblTotalTime">--:--</label>
+<h2>Event : <%= clipParams.clipFolder %></h2>
+<hr />
+<div class="video-controls">
+	<button
+		id="skipbackward"
+		onclick="skipVideoBackward()"
+		class="btn btn-backward custombtn"
+	>
+		<span class="fa fa-undo"></span>
+	</button>
+	<button id="play" onclick="playVideo()" class="btn btn-play custombtn">
+		<span class="fa fa-play"></span>
+	</button>
+	<button
+		id="pause"
+		onclick="pauseVideo()"
+		style="display: none;"
+		class="btn btn-pause custombtn"
+	>
+		<span class="fa fa-pause"></span>
+	</button>
+	<button
+		id="skipforward"
+		onclick="skipVideoForward()"
+		class="btn btn-forward custombtn"
+	>
+		<span class="fa fa-redo"></span>
+	</button>
+	<button id="stop" onclick="stopVideo()" class="btn btn-stop custombtn">
+		<span class="fa fa-stop"></span>
+	</button>
+	<button id="fullscreen" class="btn btn-fullscreen close-sidebar custombtn">
+		<span class="fa fa-expand"></span>
+	</button>
+	<button class="btn btn-fullscreen show-sidebar custombtn">
+		<span class="fa fa-compress"></span>
+	</button>
+	<label id="lblElapsedTime">--:--</label>
+	<span>/</span>
+	<label id="lblTotalTime">--:--</label>
+</div>
+<div class="row mt-sm-1 mb-sm-1">
+	<div class="col">
+		<input
+			id="progressSlider"
+			type="range"
+			min="0"
+			max="100"
+			value="0"
+			class="slider"
+			oninput="updateSliderColor()"
+		/>
 	</div>
-	<div class="row mt-sm-1 mb-sm-1">
-		<div class="col">
-			<input
-				id="progressSlider"
-				type="range"
-				min="0"
-				max="100"
-				value="0"
-				class="slider"
-				oninput="updateSliderColor()"
-			/>
-		</div>
+</div>
+<div class="row no-gutters">
+	<div class="col pr-sm-1 pb-sm-1">
+		<video id="videoleftrepeater" preload="metadata"></video>
 	</div>
-	<div class="row no-gutters">
-		<div class="col pr-sm-1 pb-sm-1">
-			<video id="videoleftrepeater" preload="metadata"></video>
-		</div>
-		<div class="col pr-sm-1 pb-sm-1">
-			<video
-				id="videofront"
-				onpause="videoPaused()"
-				onplaying="videoPlaying()"
-				ondurationchange="syncVideos()"
-				preload="auto"
-			></video>
-		</div>
-		<div class="col pr-sm-1 pb-sm-1">
-			<video id="videorightrepeater" preload="metadata"></video>
-		</div>
+	<div class="col pr-sm-1 pb-sm-1">
+		<video
+			id="videofront"
+			onpause="videoPaused()"
+			onplaying="videoPlaying()"
+			ondurationchange="syncVideos()"
+			preload="auto"
+		></video>
 	</div>
-	<div class="row no-gutters">
-		<div class="col pr-sm-1 pb-sm-1"></div>
-		<div class="col pr-sm-1 pb-sm-1">
-			<video id="videoback" preload="metadata"></video>
-		</div>
-		<div class="col pr-sm-1 pb-sm-1"></div>
+	<div class="col pr-sm-1 pb-sm-1">
+		<video id="videorightrepeater" preload="metadata"></video>
 	</div>
+</div>
+<div class="row no-gutters">
+	<div class="col pr-sm-1 pb-sm-1"></div>
+	<div class="col pr-sm-1 pb-sm-1">
+		<video id="videoback" preload="metadata"></video>
+	</div>
+	<div class="col pr-sm-1 pb-sm-1"></div>
 </div>
 <script type="text/javascript">
 	let baseVideoUrl =

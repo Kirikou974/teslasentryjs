@@ -3,11 +3,14 @@
 	<%- include('../partials/header', clipParams) -%>
 	<body>
 		<div class="page-wrapper chiller-theme toggled">
-			<%- include('../partials/menu', menuItems) -%>
+			<%- include('../partials/menu', { menuItems: menuItems, currentItem:
+			clipParams}) -%>
 
 			<!-- sidebar-wrapper  -->
 			<main class="page-content">
-				<%- include('../contents/' + pageName) -%>
+				<div class="container-fluid p-sm-1 m-sm-1">
+					<%- include('../contents/' + pageName) -%>
+				</div>
 			</main>
 			<!-- page-content" -->
 		</div>
