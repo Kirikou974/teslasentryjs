@@ -42,9 +42,9 @@
 				%> <% let eventDay = new
 				Date(menuItems[menuItemKey].items[dateEvent].time).toLocaleDateString();
 				let eventCount = menuItems[menuItemKey].items[dateEvent].events.length;
-				%> <% let active = ''; if(eventDay==clipParams.clipDay &&
-				menuItems[menuItemKey].folderName == clipParams.clipType){ active =
-				'active'; } %>
+				%> <% let active = '';let display = 'none'
+				if(eventDay==clipParams.clipDay && menuItems[menuItemKey].folderName ==
+				clipParams.clipType){ active = 'active'; display='block';} %>
 				<li class="sidebar-dropdown <%= active %>">
 					<a href="#" id="<%= eventDay %>">
 						<i class="fa fa-calendar-alt"></i>
@@ -55,7 +55,7 @@
 							<%= eventCount %>
 						</span>
 					</a>
-					<div class="sidebar-submenu">
+					<div class="sidebar-submenu" style="display: <%= display %>;">
 						<ul>
 							<%
 							menuItems[menuItemKey].items[dateEvent].events.forEach(function(event){
