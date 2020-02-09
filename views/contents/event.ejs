@@ -1,7 +1,7 @@
 <div class="container" id="videoContainer">
 	<h2>Event : <%= clipParams.clipFolder %></h2>
 	<hr />
-	<div id="buttons" class="video-controls">
+	<div class="video-controls">
 		<button
 			id="skipbackward"
 			onclick="skipVideoBackward()"
@@ -9,7 +9,7 @@
 		>
 			<span class="fa fa-undo"></span>
 		</button>
-		<button id="play" onclick="playVideo(this)" class="btn btn-play custombtn">
+		<button id="play" onclick="playVideo()" class="btn btn-play custombtn">
 			<span class="fa fa-play"></span>
 		</button>
 		<button
@@ -27,24 +27,38 @@
 		>
 			<span class="fa fa-redo"></span>
 		</button>
-		<!-- <button
-			id="accelerate"
-			onclick="accelerateVideo()"
-			class="btn btn-accelerate custombtn"
-		>
-			<span class="fa fa-fast-forward"></span>
-		</button> -->
 		<button id="stop" onclick="stopVideo()" class="btn btn-stop custombtn">
 			<span class="fa fa-stop"></span>
 		</button>
+		<label id="lblElapsedTime">--:--</label>
+		<span>/</span>
+		<label id="lblTotalTime">--:--</label>
 	</div>
-	<input id="progress" class="seekbar" value="0" type="range" min="0" max="100" onchange="changeVideoPosition()"></input>
+	<div class="row mt-sm-1 mb-sm-1">
+		<div class="col">
+			<input
+				id="progressSlider"
+				type="range"
+				min="0"
+				max="100"
+				value="0"
+				class="slider"
+				oninput="updateSliderColor()"
+			/>
+		</div>
+	</div>
 	<div class="row no-gutters">
 		<div class="col pr-sm-1 pb-sm-1">
 			<video id="videoleftrepeater" preload="metadata"></video>
 		</div>
 		<div class="col pr-sm-1 pb-sm-1">
-			<video id="videofront" preload="auto"></video>
+			<video
+				id="videofront"
+				onpause="videoPaused()"
+				onplaying="videoPlaying()"
+				ondurationchange="syncVideos()"
+				preload="auto"
+			></video>
 		</div>
 		<div class="col pr-sm-1 pb-sm-1">
 			<video id="videorightrepeater" preload="metadata"></video>
@@ -58,10 +72,10 @@
 		<div class="col pr-sm-1 pb-sm-1"></div>
 	</div>
 </div>
-<script>
+<script type="text/javascript">
 	let baseVideoUrl =
 		'/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>';
-	$(document).ready(() => {
+	$(document).ready(function() {
 		loadVideos(baseVideoUrl);
 	});
 </script>

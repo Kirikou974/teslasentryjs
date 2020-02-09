@@ -19,9 +19,44 @@ video {
 	cursor: pointer;
 }
 
-.progress-bar-fill {
-	/* width: 0; */
-	height: 4px;
-	background-color: #16aaff;
-	/* transition: width 0.35s linear; */
+.slider {
+	z-index: -1;
+	background-color: lightsteelblue;
+	-webkit-appearance: none;
+	width: 100%;
+	border-radius: 5px;
+	background: #d3d3d3;
+	outline: none;
+	opacity: 0.5;
+	-webkit-transition: 0.2s;
+	transition: opacity 0.2s;
+	height: 8px;
+	cursor: pointer;
+}
+
+.slider:hover {
+	opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	margin-bottom: 1px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: #f00;
+	cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background: #f00;
+	cursor: pointer;
+}
+
+.video-progress {
+	width: 50%;
 }
