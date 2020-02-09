@@ -1,51 +1,3 @@
-<script type="text/javascript">
-	jQuery(function($) {
-		$('.sidebar-dropdown > a').click(function() {
-			$('.sidebar-submenu').slideUp(200);
-			if (
-				$(this)
-					.parent()
-					.hasClass('active')
-			) {
-				$('.sidebar-dropdown').removeClass('active');
-				$(this)
-					.parent()
-					.removeClass('active');
-			} else {
-				$('.sidebar-dropdown').removeClass('active');
-				$(this)
-					.next('.sidebar-submenu')
-					.slideDown(200);
-				$(this)
-					.parent()
-					.addClass('active');
-			}
-		});
-
-		$('.close-sidebar').click(function() {
-			$('.page-wrapper').removeClass('toggled');
-			$('button.show-sidebar').show();
-			$('button.close-sidebar').hide();
-		});
-		$('.show-sidebar').click(function() {
-			$('.page-wrapper').addClass('toggled');
-			$('button.show-sidebar').hide();
-			$('button.close-sidebar').show();
-		});
-	});
-	$(document).ready(function() {
-		let urlParams = new URLSearchParams(window.location.search);
-		// let entries = urlParams.entries();
-		// for (pair of entries) {
-		// 	if (pair[0] === 'clipday') {
-		// 		$(`#${pair[1]}`)[0].click();
-		// 	}
-		// 	if (pair[0] === 'clipfolder') {
-		// 		$(`#${pair[1]}`).addClass('active');
-		// 	}
-		// }
-	});
-</script>
 <!-- Bootstrap core JavaScript
     	================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -55,6 +7,7 @@
 
 <!-- Icons -->
 <script src="../../js/feather.min.js"></script>
+<script src="../../js/menu.js"></script>
 
 <script>
 	feather.replace();

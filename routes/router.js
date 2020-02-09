@@ -63,8 +63,4 @@ router.get(['/:pageName'], (req, res) => {
 	});
 });
 
-router.get('/report', (req, res) => {
-	res.render('pages/index');
-});
-
 module.exports = router;
