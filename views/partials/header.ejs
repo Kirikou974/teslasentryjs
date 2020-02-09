@@ -14,6 +14,7 @@
 	<link
 		href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
 		rel="stylesheet"
+		crossorigin="anonymous"
 	/>
 	<script src="../../js/jquery.min.js"></script>
 	<script src="../../js/bootstrap.min.js"></script>
@@ -26,26 +27,6 @@
 	<% if (clipParams.clipType && clipParams.clipFolder) { %>
 	<!-- Video controls -->
 	<script src="../../js/video.js"></script>
-	<!-- Preload videos -->
-	<link
-		rel="preload"
-		as="video"
-		href="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/front"
-	/>
-	<link
-		rel="preload"
-		as="video"
-		href="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/back"
-	/>
-	<link
-		rel="preload"
-		as="video"
-		href="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/left_repeater"
-	/>
-	<link
-		rel="preload"
-		as="video"
-		href="/video/<%= clipParams.clipType %>/<%= clipParams.clipFolder %>/right_repeater"
-	/>
+
 	<% } %>
 </head>
