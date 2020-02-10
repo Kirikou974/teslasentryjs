@@ -46,7 +46,7 @@ router.get('/:cliptype/:id/:side', (req, res) => {
 //Generates video stream and streams it
 router.delete('/:cliptype/:id', (req, res) => {
 	let videoPath = common.getVideoPath(
-		eventsFolderName,
+		common.eventsFolderName,
 		req.params.cliptype,
 		req.params.id
 	);
