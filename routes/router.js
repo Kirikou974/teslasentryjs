@@ -1,6 +1,7 @@
 const express = require('express');
 const common = require('../common');
 const videoRouter = require('./video');
+const importRouter = require('./import');
 const router = express.Router();
 
 //Always add menu
@@ -12,6 +13,7 @@ router.get('*', (req, res, next) => {
 });
 
 router.use('/video', videoRouter);
+router.use('/import', importRouter);
 
 router.get('/', (req, res) => {
 	res.redirect('/home');
