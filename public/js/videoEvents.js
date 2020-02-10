@@ -173,12 +173,21 @@ function timeFormat(seconds) {
 	return m + ':' + s;
 }
 
-function deleteEvent(clipType, clipFolder) {
+function deleteEvent(clipType, clipFolder, clipDay) {
 	$.ajax({
 		type: 'DELETE',
-		url: `/video/${clipType}/${clipFolder}`,
-		success: function() {
-			window.location.replace('/eventDeleted');
+		url: `/video/${clipType}/${clipDay}/${clipFolder}`,
+		success: function(result) {
+			if (result.clipFolder && result.clipDay && result.clipType) {
+				clipType = result.clipType;
+				clipDay = result.clipDay;
+				clipFolder = result.clipFolder;
+				window.location.replace(
+					`/event?cliptype=${result.clipType}&clipday=${result.clipDay}&clipfolder=${result.clipFolder}`
+				);
+			} else {
+				window.location.replace('/allEventsDeleted');
+			}
 		},
 		error: function() {
 			window.location.replace('/error');

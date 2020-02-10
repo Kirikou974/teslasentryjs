@@ -96,7 +96,7 @@ button.show-sidebar {
 #show-sidebar {
 	position: fixed;
 	left: 0;
-	top: 10px;
+	top: 1px;
 	border-radius: 0 4px 4px 0px;
 	width: 35px;
 	transition-delay: 0.3s;

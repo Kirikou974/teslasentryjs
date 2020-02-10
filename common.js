@@ -4,12 +4,12 @@ const eventsFolderName = 'events';
 const { exec } = require('child_process');
 
 const clipTypes = {
-	SENTRY: {
+	SentryClips: {
 		folderName: 'SentryClips',
 		menuTitle: 'Sentry clips',
 		menuIcon: 'eye'
 	},
-	SAVED: {
+	SavedClips: {
 		folderName: 'SavedClips',
 		menuTitle: 'Saved clips',
 		menuIcon: 'video'
@@ -46,6 +46,7 @@ async function getClips(clipType) {
 		let folderNameArray = folder.split('_');
 		let folderTime = folderNameArray[1].replace(/-/gi, ':');
 		let folderShortDate = new Date(folderNameArray[0]);
+		let rawFolderName = folderNameArray[0];
 		let folderShortDateTime = folderShortDate.getTime();
 		let folderDate = new Date(
 			`${folderShortDate.toLocaleDateString()} ${folderTime}`
@@ -56,12 +57,12 @@ async function getClips(clipType) {
 			folderName: folder
 		};
 
-		if (eventDates.items[folderShortDateTime] == undefined) {
-			eventDates.items[folderShortDateTime] = {};
-			eventDates.items[folderShortDateTime].events = [];
-			eventDates.items[folderShortDateTime].time = folderShortDateTime;
+		if (eventDates.items[rawFolderName] == undefined) {
+			eventDates.items[rawFolderName] = {};
+			eventDates.items[rawFolderName].events = [];
+			eventDates.items[rawFolderName].time = folderShortDateTime;
 		}
-		eventDates.items[folderShortDateTime].events.push(event);
+		eventDates.items[rawFolderName].events.push(event);
 	});
 	return eventDates;
 }
@@ -99,8 +100,8 @@ exports.getVideoPoster = async (videoPath, videoSide) => {
 
 exports.getAllEvents = async () => {
 	let events = {};
-	events.sentryEvents = await getClips(clipTypes.SENTRY);
-	events.savedEvents = await getClips(clipTypes.SAVED);
+	events.SentryClips = await getClips(clipTypes.SentryClips);
+	events.SavedClips = await getClips(clipTypes.SavedClips);
 	return events;
 };
 

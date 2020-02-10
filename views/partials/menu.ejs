@@ -50,17 +50,16 @@
 				</li>
 				<%
 				Object.keys(menuItems[menuItemKey].items).forEach(function(dateEvent){
-				%> <% let eventDay = new
-				Date(menuItems[menuItemKey].items[dateEvent].time).toLocaleDateString();
-				let eventCount = menuItems[menuItemKey].items[dateEvent].events.length;
-				%> <% let active = '';let display = 'd-none';
-				if(eventDay==clipParams.clipDay && menuItems[menuItemKey].folderName ==
-				clipParams.clipType){ active = 'active'; display='d-block';} %>
+				%> <% let eventCount =
+				menuItems[menuItemKey].items[dateEvent].events.length; %> <% let active
+				= '';let display = 'd-none'; if(dateEvent==clipParams.clipDay &&
+				menuItems[menuItemKey].folderName == clipParams.clipType){ active =
+				'active'; display='d-block';} %>
 				<li class="sidebar-dropdown <%= active %>">
-					<a href="#" id="<%= eventDay %>">
+					<a href="#" id="<%= dateEvent %>">
 						<i class="fa fa-calendar-alt"></i>
 						<span>
-							<%= eventDay %>
+							<%= dateEvent %>
 						</span>
 						<span class="badge badge-pill badge-warning notification">
 							<%= eventCount %>
@@ -76,7 +75,7 @@
 								clipParams.clipFolder) { activeEvent = 'active'; } %>
 								<a
 									id="<%= event.folderName %>"
-									href="/event?cliptype=<%= menuItems[menuItemKey].folderName %>&clipday=<%= eventDay %>&clipfolder=<%= event.folderName %>"
+									href="/event?cliptype=<%= menuItems[menuItemKey].folderName %>&clipday=<%= dateEvent %>&clipfolder=<%= event.folderName %>"
 									class="<%= activeEvent %>"
 								>
 									<%=new Date(event.time).toLocaleTimeString() %>

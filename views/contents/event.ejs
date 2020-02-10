@@ -1,9 +1,12 @@
+<br />
 <h2>
 	<div class="row">
-		<div class="col col-sm-5">
+		<div class="col">
 			Event <%= clipParams.clipFolder %>
 		</div>
-		<div class="col mt-sm-n1 ml-sm-n4">
+	</div>
+	<div class="row">
+		<div class="col">
 			<button type="button" class="btn btn-success btn-sm">
 				<i class="fa fa-download" aria-hidden="true"></i>
 			</button>
@@ -22,6 +25,7 @@
 	</div>
 </h2>
 <hr />
+<a name="videoAnchor"></a>
 <div class="video-controls">
 	<button
 		id="skipbackward"
@@ -130,7 +134,7 @@
 				<button
 					type="button"
 					class="btn btn-danger"
-					onclick="deleteEvent('<%= clipParams.clipType %>','<%= clipParams.clipFolder %>')"
+					onclick="deleteEvent('<%= clipParams.clipType %>','<%= clipParams.clipFolder %>', '<%= clipParams.clipDay %>')"
 				>
 					<i class="fa fa-check-circle" aria-hidden="true"></i>
 				</button>

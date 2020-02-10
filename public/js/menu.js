@@ -1,3 +1,8 @@
+function scrollToAnchor(aid) {
+	var aTag = $("a[name='" + aid + "']");
+	$('html,body').animate({ scrollTop: aTag.offset().top }, 'slow');
+}
+
 jQuery(function($) {
 	$('.sidebar-dropdown > a').click(function() {
 		$('.sidebar-submenu').slideUp(200, function() {
@@ -28,6 +33,7 @@ jQuery(function($) {
 		$('.page-wrapper').removeClass('toggled');
 		$('button.show-sidebar').show();
 		$('button.close-sidebar').hide();
+		scrollToAnchor('videoAnchor');
 	});
 	$('.show-sidebar').click(function() {
 		$('.page-wrapper').addClass('toggled');
