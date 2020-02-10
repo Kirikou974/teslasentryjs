@@ -172,3 +172,18 @@ function timeFormat(seconds) {
 			: Math.floor(seconds - m * 60);
 	return m + ':' + s;
 }
+
+function deleteEvent(clipType, clipFolder) {
+	console.log(clipType);
+	console.log(clipFolder);
+	$.ajax({
+		type: 'DELETE',
+		url: `/video/${clipType}/${clipFolder}`,
+		success: function() {
+			console.log('success');
+		},
+		error: function() {
+			console.log('error');
+		}
+	});
+}

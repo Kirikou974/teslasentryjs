@@ -2,6 +2,7 @@ const fs = require('fs');
 const { promisify } = require('util');
 const readdirAsync = promisify(fs.readdir);
 const accessAsync = promisify(fs.access);
+const unlinkAsync = promisify(fs.unlink);
 const { exec } = require('child_process');
 
 const clipTypes = {
@@ -67,7 +68,14 @@ async function getClips(clipType) {
 	});
 	return eventDates;
 }
-
+exports.deleteVideo = async videoPath => {
+	try {
+		await unlinkAsync(videoPath);
+		console.log('unlink OK');
+	} catch (error) {
+		throw error;
+	}
+};
 exports.getVideoPoster = async (videoPath, videoSide) => {
 	let exportImagePath = `${videoPath}/${videoSide}.jpg`;
 	try {
