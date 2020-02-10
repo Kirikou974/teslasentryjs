@@ -1,14 +1,18 @@
 const express = require('express');
+const path = require('path');
 const common = require('../common');
 const router = express.Router();
-const eventsFolderName = 'events';
 
 //Generates poster image for video
 router.get('/:cliptype/:id/:side/poster.jpg', (req, res) => {
 	let videoType = req.params.cliptype;
 	let videoId = req.params.id;
 	let videoSide = req.params.side;
-	let videoPath = common.getVideoPath(eventsFolderName, videoType, videoId);
+	let videoPath = common.getVideoPath(
+		common.eventsFolderName,
+		videoType,
+		videoId
+	);
 	common
 		.getVideoPoster(videoPath, videoSide)
 		.then(imagePath => {
@@ -24,7 +28,11 @@ router.get('/:cliptype/:id/:side', (req, res) => {
 	let videoType = req.params.cliptype;
 	let videoId = req.params.id;
 	let videoSide = req.params.side;
-	let videoPath = common.getVideoPath(eventsFolderName, videoType, videoId);
+	let videoPath = common.getVideoPath(
+		common.eventsFolderName,
+		videoType,
+		videoId
+	);
 	common
 		.getVideo(videoPath, videoSide)
 		.then(fullVideoPath => {
@@ -42,7 +50,6 @@ router.delete('/:cliptype/:id', (req, res) => {
 		req.params.cliptype,
 		req.params.id
 	);
-	console.log(`Delete ${videoPath}`);
 	common
 		.deleteVideo(videoPath)
 		.then(() => {

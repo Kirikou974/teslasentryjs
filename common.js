@@ -1,8 +1,6 @@
-const fs = require('fs');
-const { promisify } = require('util');
-const readdirAsync = promisify(fs.readdir);
-const accessAsync = promisify(fs.access);
-const rmdirAsync = promisify(fs.rmdir);
+const fs = require('fs-extra');
+const fsold = require('fs');
+const eventsFolderName = 'events';
 const { exec } = require('child_process');
 
 const clipTypes = {
@@ -21,13 +19,12 @@ const clipTypes = {
 var exports = (module.exports = {});
 
 function checkFolder(folder) {
-	return !folder.name.startsWith('.') && folder.isDirectory();
+	return folder.isDirectory() && !folder.name.startsWith('.');
 }
 
 async function getFolderList(subFolderName) {
-	let folders = await readdirAsync(`events/${subFolderName}`, {
-		withFileTypes: true
-	});
+	let pathPrefix = `${eventsFolderName}/${subFolderName}`;
+	let folders = await fs.readdir(pathPrefix, { withFileTypes: true });
 	let filteredFolders = folders.filter(checkFolder);
 	let results = [];
 	filteredFolders.forEach(folder => {
@@ -70,8 +67,7 @@ async function getClips(clipType) {
 }
 exports.deleteVideo = async videoPath => {
 	try {
-		//TODO => fix code won't work
-		await rmdirAsync(videoPath, { recursive: true });
+		await fs.remove(videoPath);
 	} catch (error) {
 		throw error;
 	}
@@ -79,7 +75,7 @@ exports.deleteVideo = async videoPath => {
 exports.getVideoPoster = async (videoPath, videoSide) => {
 	let exportImagePath = `${videoPath}/${videoSide}.jpg`;
 	try {
-		await accessAsync(exportImagePath, fs.F_OK);
+		await fs.access(exportImagePath, 0);
 		return exportImagePath;
 	} catch (error) {
 		if (error.errno == -2) {
@@ -150,7 +146,7 @@ exports.getVideo = async (videoPath, videoSide) => {
 	let fullExportVideoPath = `${videoPath}/${videoSide}`;
 
 	try {
-		await accessAsync(`${fullExportVideoPath}.mp4`, fs.F_OK);
+		await fs.access(`${fullExportVideoPath}.mp4`, 0);
 		return `${fullExportVideoPath}.mp4`;
 	} catch (error) {
 		if (error.errno == -2) {
@@ -176,3 +172,5 @@ exports.getVideo = async (videoPath, videoSide) => {
 		}
 	}
 };
+
+exports.eventsFolderName = eventsFolderName;

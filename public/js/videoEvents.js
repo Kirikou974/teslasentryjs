@@ -174,16 +174,14 @@ function timeFormat(seconds) {
 }
 
 function deleteEvent(clipType, clipFolder) {
-	console.log(clipType);
-	console.log(clipFolder);
 	$.ajax({
 		type: 'DELETE',
 		url: `/video/${clipType}/${clipFolder}`,
 		success: function() {
-			console.log('success');
+			window.location.replace('/eventDeleted');
 		},
 		error: function() {
-			console.log('error');
+			window.location.replace('/error');
 		}
 	});
 }
