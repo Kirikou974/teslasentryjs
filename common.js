@@ -2,7 +2,7 @@ const fs = require('fs');
 const { promisify } = require('util');
 const readdirAsync = promisify(fs.readdir);
 const accessAsync = promisify(fs.access);
-const unlinkAsync = promisify(fs.unlink);
+const rmdirAsync = promisify(fs.rmdir);
 const { exec } = require('child_process');
 
 const clipTypes = {
@@ -70,8 +70,8 @@ async function getClips(clipType) {
 }
 exports.deleteVideo = async videoPath => {
 	try {
-		await unlinkAsync(videoPath);
-		console.log('unlink OK');
+		//TODO => fix code won't work
+		await rmdirAsync(videoPath, { recursive: true });
 	} catch (error) {
 		throw error;
 	}

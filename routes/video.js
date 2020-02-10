@@ -46,7 +46,6 @@ router.delete('/:cliptype/:id', (req, res) => {
 	common
 		.deleteVideo(videoPath)
 		.then(() => {
-			console.log('isDeleted');
 			res.sendStatus(200);
 		})
 		.catch(error => {
