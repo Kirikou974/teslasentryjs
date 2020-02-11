@@ -106,3 +106,4 @@ dist
 events/SavedClips/*
 events/SentryClips/*
 logs/*
+tmp/*

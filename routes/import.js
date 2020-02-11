@@ -4,26 +4,42 @@ const fs = require('fs-extra');
 const common = require('../common');
 const router = express.Router();
 
+const form = new formidable.IncomingForm();
+form.maxFileSize = 20000 * 1024 * 1024;
+
 router.post('/upload', (req, res) => {
-	const form = formidable();
 	form.parse(req);
+	form.on('progress', function(bytesReceived, bytesExpected) {
+		console.log(
+			`${bytesReceived}/${bytesExpected} (${(bytesReceived / bytesExpected) *
+				100} %)`
+		);
+	});
 	form.on('fileBegin', function(name, file) {
-		// file.path = `${__dirname}/../${common.eventsFolderName}/${file.name}`;
 		let fileNameArray = file.name.split('/');
-		let parentFolderName = fileNameArray[0];
-		let destinationFolder = `${__dirname}/../tmp/${parentFolderName}`;
-		console.log(`${__dirname}/../tmp/${file.name}`);
-		fs.exists(destinationFolder).then(exists => {
-			if (!exists) {
-				console.log('creating folder');
-				fs.mkdirSync(destinationFolder);
+		let destinationFolder = `${__dirname}/../tmp`;
+
+		for (let index = 0; index < fileNameArray.length - 1; index++) {
+			const partName = fileNameArray[index];
+			destinationFolder = `${destinationFolder}/${partName}`;
+			console.log(destinationFolder);
+			if (!fs.existsSync(destinationFolder)) {
+				try {
+					fs.mkdirSync(destinationFolder);
+				} catch (error) {
+					//folder exists error code -17
+					if (error.errno != -17) {
+						throw error;
+					}
+				}
 			}
-			file.path = `${__dirname}/../tmp/${file.name}`;
-		});
+		}
+		// file.path = `${__dirname}/../${common.eventsFolderName}/${file.name}`;
+		file.path = `${__dirname}/../tmp/${file.name}`;
 	});
 
 	form.on('file', function(name, file) {
-		console.log('Uploaded ' + file.name);
+		// console.log('Uploaded ' + file.name);
 	});
 	res.send('OK');
 });
