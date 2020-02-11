@@ -13,7 +13,7 @@ router.get('*', (req, res, next) => {
 });
 
 router.use('/video', videoRouter);
-// router.use('/import', importRouter);
+router.use('/import', importRouter);
 
 router.get('/', (req, res) => {
 	res.redirect('/home');
