@@ -103,7 +103,7 @@ dist
 # TernJS port file
 .tern-port
 
-events/SavedClips/*
-events/SentryClips/*
+events/TeslaCam/SavedClips/*
+events/TeslaCam/SentryClips/*
 logs/*
 tmp/*

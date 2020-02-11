@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const fsold = require('fs');
-const eventsFolderName = 'events';
+const eventsFolderName = 'events/TeslaCam';
 const { exec } = require('child_process');
 
 const clipTypes = {
