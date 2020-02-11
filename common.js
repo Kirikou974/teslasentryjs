@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const fsold = require('fs');
-const eventsFolderName = 'events/TeslaCam';
+const eventsFolderName = 'TeslaCam';
 const { exec } = require('child_process');
 
 const clipTypes = {
@@ -22,8 +22,33 @@ function checkFolder(folder) {
 	return folder.isDirectory() && !folder.name.startsWith('.');
 }
 
+function ensureFolderStructure(path) {
+	let fileNameArray = path.split('/');
+	fs.ensureDir;
+	for (let index = 0; index < fileNameArray.length - 1; index++) {
+		const partName = fileNameArray[index];
+		destinationFolder = `${destinationFolder}/${partName}`;
+		try {
+			if (!fs.existsSync(destinationFolder)) {
+				try {
+					fs.mkdirSync(destinationFolder);
+				} catch (error) {
+					//folder exists error code -17
+					if (error.errno != -17) {
+						throw error;
+					}
+				}
+			}
+		} catch (error) {
+			throw error;
+		}
+	}
+	return true;
+}
+
 async function getFolderList(subFolderName) {
 	let pathPrefix = `${eventsFolderName}/${subFolderName}`;
+	fs.ensureDirSync(pathPrefix);
 	let folders = await fs.readdir(pathPrefix, { withFileTypes: true });
 	let filteredFolders = folders.filter(checkFolder);
 	let results = [];
