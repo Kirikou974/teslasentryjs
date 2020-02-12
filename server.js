@@ -20,7 +20,7 @@ const accessLogStream = rfs.createStream('access.log', {
 	size: '10M'
 });
 
-app.use(morgan('tiny', { stream: accessLogStream }));
+app.use(morgan('combined', { stream: accessLogStream }));
 
 app.get('/favicon.ico', (req, res, next) => {
 	res.sendFile(path.join(__dirname, 'public/images/favicon.ico'));
