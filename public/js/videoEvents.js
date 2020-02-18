@@ -120,7 +120,7 @@ function updateSliderColor() {
 	let progressSliderObject = $(progressSlider)[0];
 	let currentValue = progressSliderObject.value;
 	let videoDuration = getVideoDuration();
-	let v = (currentValue / videoDuration + 0.01) * 100;
+	let v = ((currentValue / videoDuration) * 100).toFixed(2);
 
 	progressSliderObject.style.background =
 		'-moz-linear-gradient(left,  #ed1e24 0%, #ed1e24 ' +

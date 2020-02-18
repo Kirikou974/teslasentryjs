@@ -24,6 +24,10 @@ router.post('/upload', (req, res) => {
 	form.on('file', function(name, file) {
 		// console.log('Uploaded ' + file.name);
 	});
+
+	form.on('end', function(name, file) {
+		// Upload ended;
+	});
 	res.send('OK');
 });
 

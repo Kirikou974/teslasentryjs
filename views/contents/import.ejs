@@ -8,15 +8,25 @@
 <hr />
 <div class="row">
 	<div class="col col-sm-5">
-		<form action="/import/upload" enctype="multipart/form-data" method="post">
+		<form enctype="multipart/form-data" method="post">
 			<input
+				id="file"
 				type="file"
 				webkitdirectory
 				mozdirectory
-				accept="image/*"
 				name="upload"
+				onchange="uploadFile()"
 			/>
-			<input type="submit" value="upload" />
+			<!-- <input type="submit" value="upload" /> -->
+			<br />
+			<progress
+				id="progressBar"
+				value="0"
+				max="100"
+				style="width:300px;"
+			></progress>
+			<h3 id="status"></h3>
+			<p id="loaded_n_total"></p>
 		</form>
 	</div>
 </div>
